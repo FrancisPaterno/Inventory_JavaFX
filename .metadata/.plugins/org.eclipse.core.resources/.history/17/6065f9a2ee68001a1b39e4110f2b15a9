@@ -1,0 +1,16 @@
+package application.Constants;
+
+import application.datamodel.RolePermission;
+
+public class PermissionConstants {
+
+	public final static String ADD = "ADD";
+	public final static String EDIT = "EDIT";
+	public final static String DELETE = "DELETE";
+	public final static String REPORTS = "REPORTS";
+	
+	public static isPermitted(UserRole userRole, String action) {
+		
+		for(RolePermission rolePermission : userRole.get)
+	}
+}

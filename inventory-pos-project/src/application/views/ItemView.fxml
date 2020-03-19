@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+
+<AnchorPane prefHeight="920.0" prefWidth="800.0" style="-fx-background-color: #99622b;" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8.0.171">
+   <children>
+      <Label layoutX="511.0" layoutY="34.0" text="Item">
+         <font>
+            <Font name="System Bold" size="44.0" />
+         </font>
+      </Label>
+   </children>
+</AnchorPane>

@@ -1,0 +1,45 @@
+package application.controller.datamodel.manager;
+
+import java.util.List;
+
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
+
+import org.hibernate.Session;
+
+import application.datamodel.Permissions;
+import javafx.scene.control.TableView;
+
+public class ManagePermission {
+
+	private static volatile ManagePermission INSTANCE;
+	
+	public static ManagePermission getInstance() {
+		if(INSTANCE == null) {
+			synchronized (ManagePermission.class) {
+				if(INSTANCE == null) {
+					INSTANCE = new ManagePermission();
+				}
+			}
+		}
+		return INSTANCE;
+	}
+	
+	public Boolean saveOrUpdatePermissions(TableView<Permissions> tblView) {
+		for(Permissions permission : tblView.getItems()) {
+			
+		}
+	}
+	
+	public List<Permissions> listPermissions(){
+		Session session = SessionManager.getSession();
+		List<Permissions> permissions = null;
+		CriteriaBuilder cb = session.getCriteriaBuilder();
+		CriteriaQuery<Permissions> criteria = cb.createQuery(Permissions.class);
+		Root<Permissions> pPermission = criteria.from(Permissions.class);
+		criteria.select(pPermission);
+		permissions = session.createQuery(criteria).getResultList();
+		return permissions;
+	}
+}

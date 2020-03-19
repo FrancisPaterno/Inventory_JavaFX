@@ -1,0 +1,5 @@
+package application.Constants;
+
+public class UserRoleConstants {
+
+}

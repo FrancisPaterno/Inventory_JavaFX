@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.layout.FlowPane?>
+<?import javafx.scene.text.Font?>
+
+<FlowPane columnHalignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefWrapLength="0.0" stylesheets="@../application.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <JFXButton fx:id="btnRole" contentDisplay="TOP" prefHeight="400.0" prefWidth="400.0" styleClass="homemenu" text="Role/Privileges">
+         <graphic>
+            <FontAwesomeIconView glyphName="GROUP" size="80" />
+         </graphic>
+         <FlowPane.margin>
+            <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+         </FlowPane.margin>
+         <font>
+            <Font name="System Bold" size="18.0" />
+         </font>
+      </JFXButton>
+      <JFXButton fx:id="btnUsers" contentDisplay="TOP" prefHeight="400.0" prefWidth="400.0" styleClass="homemenu" text="Users">
+         <graphic>
+            <FontAwesomeIconView glyphName="USER" size="80" />
+         </graphic>
+         <FlowPane.margin>
+            <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+         </FlowPane.margin>
+         <font>
+            <Font name="System Bold" size="18.0" />
+         </font>
+      </JFXButton>
+   </children>
+</FlowPane>

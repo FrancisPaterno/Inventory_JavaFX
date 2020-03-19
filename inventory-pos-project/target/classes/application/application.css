@@ -1,0 +1,24 @@
+/* JavaFX CSS - Leave this comment until you have at least create one rule which uses -fx-Property */
+.button:hover   {
+	-fx-effect: dropshadow(three-pass-box, #0a10ce, 10, 0, 0, 0);
+	-fx-text-fill: #0a10ce;
+}
+
+.button {
+	-fx-effect: dropshadow(three-pass-box, black, 10, 0, 0, 0);
+	-fx-text-fill: black;
+}
+
+.button:hover .glyph-icon{
+	-fx-fill:#0a10ce;
+}
+
+.error {  
+ -fx-border-color: red ;  
+ -fx-border-width: 2px ;  
+}
+
+.homemenu{
+	-fx-border-radius:25%;
+	-fx-border-style: solid 
+}

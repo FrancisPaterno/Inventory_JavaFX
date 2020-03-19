@@ -1,0 +1,8 @@
+package application.Constants;
+
+public class PermissionConstants {
+
+	public final static String ADD = "ADD";
+	public final static String EDIT = "EDIT";
+	public final static String DELETE = "DELETE";
+}

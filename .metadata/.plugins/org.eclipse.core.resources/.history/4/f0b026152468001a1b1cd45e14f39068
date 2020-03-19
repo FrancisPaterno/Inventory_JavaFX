@@ -1,0 +1,16 @@
+package application.controller.datamodel.manager;
+
+public class ManageRolePermission {
+
+	private static volatile ManageRolePermission INSTANCE;
+	
+	public static ManageRolePermission getInstance() {
+		if(INSTANCE == null) {
+			synchronized (ManageRolePermission.class) {
+				if(INSTANCE == null) {
+					
+				}
+			}
+		}
+	}
+}

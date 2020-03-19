@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.effect.DropShadow?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane fx:id="mainStage" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.controller.MainViewController">
+   <children>
+      <HBox alignment="TOP_CENTER" layoutX="1.0" AnchorPane.bottomAnchor="820.0" AnchorPane.leftAnchor="1.0" AnchorPane.rightAnchor="1.0" AnchorPane.topAnchor="1.0">
+         <children>
+            <JFXButton fx:id="mwnhome" onAction="#showSidePane" onMouseEntered="#showSidePaneHover" prefHeight="70.0" prefWidth="170.0" text="MWN Home">
+               <graphic>
+                  <FontAwesomeIconView glyphName="HOME" size="40" styleClass="fontIcon" />
+               </graphic>
+               <font>
+                  <Font name="System Bold" size="15.0" />
+               </font>
+               <effect>
+                  <DropShadow color="#0a10cef7" />
+               </effect></JFXButton>
+            <JFXButton fx:id="masterList" layoutX="209.0" layoutY="10.0" onAction="#showSidePane" onMouseEntered="#showSidePaneHover" prefHeight="70.0" prefWidth="170.0" text="Master List">
+               <graphic>
+                  <FontAwesomeIconView glyphName="LIST" size="40" />
+               </graphic>
+               <font>
+                  <Font name="System Bold" size="15.0" />
+               </font>
+            </JFXButton>
+            <JFXButton fx:id="inventory" layoutX="434.0" layoutY="13.0" onAction="#showSidePane" onMouseEntered="#showSidePaneHover" prefHeight="70.0" prefWidth="170.0" text="INVENTORY">
+               <graphic>
+                  <FontAwesomeIconView glyphName="DATABASE" size="40" />
+               </graphic>
+               <font>
+                  <Font name="System Bold" size="15.0" />
+               </font></JFXButton>
+            <JFXButton layoutX="509.0" layoutY="13.0" onAction="#showSidePane" onMouseEntered="#showSidePaneHover" prefHeight="70.0" prefWidth="170.0" text="POS">
+               <graphic>
+                  <FontAwesomeIconView fx:id="pos" glyphName="CART_PLUS" size="40" />
+               </graphic>
+               <font>
+                  <Font name="System Bold" size="15.0" />
+               </font></JFXButton>
+            <JFXButton fx:id="reports" layoutX="584.0" layoutY="13.0" onAction="#showSidePane" onMouseEntered="#showSidePaneHover" prefHeight="70.0" prefWidth="170.0" text="REPORTS">
+               <graphic>
+                  <FontAwesomeIconView glyphName="BAR_CHART" size="40" />
+               </graphic>
+               <font>
+                  <Font name="System Bold" size="15.0" />
+               </font></JFXButton>
+         </children>
+      </HBox>
+      <AnchorPane layoutX="205.0" layoutY="257.0" AnchorPane.bottomAnchor="1.0" AnchorPane.leftAnchor="1.0" AnchorPane.rightAnchor="1.0" AnchorPane.topAnchor="100.0">
+         <children>
+            <AnchorPane fx:id="contentpane" layoutX="306.0" layoutY="207.0" AnchorPane.bottomAnchor="25.0" AnchorPane.leftAnchor="105.0" AnchorPane.rightAnchor="1.0" AnchorPane.topAnchor="1.0" />
+            <VBox id="masterlist" fx:id="vboxmasterlist" layoutX="6.0" layoutY="1.0" onMouseExited="#hideMasterList" AnchorPane.bottomAnchor="25.0" AnchorPane.leftAnchor="1.0" AnchorPane.topAnchor="1.0">
+               <children>
+                  <JFXButton fx:id="itemcategory" alignment="BASELINE_CENTER" contentDisplay="TOP" onAction="#loadItemCategory" onMouseEntered="#loadItemCategory" prefHeight="100.0" prefWidth="100.0" text="Category">
+                     <font>
+                        <Font name="System Bold" size="15.0" />
+                     </font>
+                     <graphic>
+                        <FontAwesomeIconView glyphName="OBJECT_GROUP" size="30" />
+                     </graphic>
+                  </JFXButton>
+                  <JFXButton fx:id="itembrand" alignment="BASELINE_CENTER" contentDisplay="TOP" layoutX="20.0" layoutY="10.0" onAction="#loadItemBrand" onMouseEntered="#loadItemBrand" prefHeight="100.0" prefWidth="100.0" text="Brand">
+                     <font>
+                        <Font name="System Bold" size="15.0" />
+                     </font>
+                     <graphic>
+                        <FontAwesomeIconView glyphName="BUYSELLADS" size="30" />
+                     </graphic>
+                  </JFXButton>
+                  <JFXButton fx:id="itemsupplier" alignment="BASELINE_CENTER" contentDisplay="TOP" layoutX="10.0" layoutY="100.0" onAction="#loadItemSupplier" onMouseEntered="#loadItemSupplier" prefHeight="100.0" prefWidth="100.0" text="Supplier">
+                     <font>
+                        <Font name="System Bold" size="15.0" />
+                     </font>
+                     <graphic>
+                        <FontAwesomeIconView glyphName="TRUCK" size="30" />
+                     </graphic>
+                  </JFXButton>
+                  <JFXButton fx:id="btnitem" alignment="BASELINE_CENTER" contentDisplay="TOP" layoutX="10.0" layoutY="190.0" onAction="#loadItem" onMouseEntered="#loadItem" prefHeight="100.0" prefWidth="100.0" text="Item">
+                     <font>
+                        <Font name="System Bold" size="15.0" />
+                     </font>
+                     <graphic>
+                        <FontAwesomeIconView glyphName="TH_LIST" size="30" />
+                     </graphic>
+                  </JFXButton>
+               </children>
+            </VBox>
+         </children>
+      </AnchorPane>
+      <HBox fx:id="statusBarPane" prefHeight="25.0" prefWidth="744.0" AnchorPane.bottomAnchor="1.0" AnchorPane.leftAnchor="1.0" AnchorPane.rightAnchor="1.0">
+         <children>
+            <Label id="lblUserInfo" fx:id="lblUserInfo" />
+         </children>
+      </HBox>
+   </children>
+</AnchorPane>
