@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration>
+	<Properties>
+		<Property name="baseDir">logs</Property>
+	</Properties>
+	<Appenders>
+		<Console name="Console" target="SYSTEM_OUT">
+			<PatternLayout
+				pattern="%d{yyyy-MMM-dd HH:mm:ss a} [%t] %-5level %logger{36} :%5L -%msg%n" />
+		</Console>
+		<RollingFile name="RollingFile"
+			fileName="${baseDir}/app.log"
+			filePattern="${baseDir}/$${date:yyyy-MM}/app-%d{yyyy-MM-dd-HH}-%i.log.gz">
+			<PatternLayout
+				pattern="%d{yyyy-MMM-dd HH:mm:ss a} [%t] %-5level %logger{36} :%5L -%msg%n" />
+			<Policies>
+				<TimeBasedTriggeringPolicy />
+				<SizeBasedTriggeringPolicy size="250 MB" />
+			</Policies>
+			<DefaultRolloverStrategy max="100">
+				<!-- Nested conditions: the inner condition is only evaluated on files 
+					for which the outer conditions are true. -->
+				<Delete basePath="${baseDir}" maxDepth="2">
+					<IfFileName glob="*/app-*.log.gz">
+						<IfLastModified age="30d">
+							<IfAny>
+								<IfAccumulatedFileSize exceeds="100 GB" />
+								<IfAccumulatedFileCount exceeds="10" />
+							</IfAny>
+						</IfLastModified>
+					</IfFileName>
+				</Delete>
+			</DefaultRolloverStrategy>
+		</RollingFile>
+		<JDBC name="MWNDatabase" tableName="app_logs">
+			<ConnectionFactory
+				class="application.logging.manager.ConnectionFactory"
+				method="getDatabaseConnection" />
+			<Column name="LOG_ID" pattern="%uid" />
+			<Column name="ENTRY_DATE" isEventTimestamp="true" />
+			<Column name="THREAD" pattern="%t" />
+			<Column name="LOGGER" pattern="%logger" />
+			<Column name="LINE" pattern="%L" />
+			<Column name="LOG_LEVEL" pattern="%level" />
+			<Column name="MESSAGE" pattern="%m" />
+			<Column name="EXCEPTION" pattern="%throwable" />
+		</JDBC>
+	</Appenders>
+	<Loggers>
+		<Root level="info">
+			<AppenderRef ref="Console" />
+			<AppenderRef ref="RollingFile" />
+			<AppenderRef ref="MWNDatabase" />
+		</Root>
+		<Logger name="org.hibernate.sql" level="debug"
+			additivity="false">
+			<AppenderRef ref="Console" />
+			<AppenderRef ref="RollingFile" />
+			<AppenderRef ref="MWNDatabase" />
+		</Logger>
+		<Logger name="org.hibernate.type" level="debug"
+			additivity="false">
+			<AppenderRef ref="Console" />
+			<AppenderRef ref="RollingFile" />
+			<AppenderRef ref="MWNDatabase" />
+		</Logger>
+		<Logger name="org.hibernate.pretty" level="debug"
+			additivity="false">
+			<AppenderRef ref="Console" />
+			<AppenderRef ref="RollingFile" />
+			<AppenderRef ref="MWNDatabase" />
+		</Logger>
+		<!-- <Logger name="application" level="debug" additivity="false">
+			<AppenderRef ref="Console" />
+			<AppenderRef ref="RollingFile" />
+			<AppenderRef ref="MWNDatabase" />
+		</Logger> -->
+	</Loggers>
+</Configuration>

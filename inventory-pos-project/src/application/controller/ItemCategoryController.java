@@ -59,6 +59,7 @@ public class ItemCategoryController implements Initializable{
 	@FXML
 	private Button btnSearch;
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		colCategory = new TableColumn<ItemCategory, String>("Category");

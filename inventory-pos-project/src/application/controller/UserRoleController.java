@@ -58,6 +58,7 @@ public class UserRoleController implements Initializable{
 	private TableColumn<UserRole, String> colEdit;
 	private TableColumn<UserRole, String> colDelete;
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		colRole = new TableColumn<UserRole, String>("Role");

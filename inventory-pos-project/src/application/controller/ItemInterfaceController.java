@@ -59,7 +59,7 @@ public class ItemInterfaceController implements Initializable{
 	private JFXButton btnOk;
 	
 	private Stage stage;
-	private Boolean isImageLoaded;
+	//private Boolean isImageLoaded;
 	private Boolean isEdit;
 	private File file;
 	private String oldId;
@@ -133,12 +133,12 @@ public class ItemInterfaceController implements Initializable{
 			return;
 		
 		imageViewer.setImage(new Image(file.toURI().toString()));
-		isImageLoaded = true;
+		//isImageLoaded = true;
 	}
 	
 	private void clearImage() {
 		imageViewer.setImage(null);
-		isImageLoaded = false;
+		//isImageLoaded = false;
 	}
 	
 	private Boolean isValidated() {

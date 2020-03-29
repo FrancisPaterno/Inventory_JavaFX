@@ -63,6 +63,7 @@ public class UserController implements Initializable{
 	private TableColumn<User, UserRole> colRole;
 	private TableColumn<User, String> colEdit;
 	private TableColumn<User, String> colDelete;
+	@SuppressWarnings("unchecked")
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		cmbCategorySearch.getItems().addAll(User.ALL, User.ID, User.USERNAME, User.EMAIL, User.ROLE);

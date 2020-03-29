@@ -63,6 +63,7 @@ public class SupplierController implements Initializable {
 	private TableColumn<Supplier, String> colEdit;
 	private TableColumn<Supplier, String> colDelete;
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		this.colsupplierID = new TableColumn<Supplier, Integer>("ID");

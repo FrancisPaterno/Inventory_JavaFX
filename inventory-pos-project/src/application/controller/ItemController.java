@@ -68,6 +68,7 @@ public class ItemController implements Initializable{
 	private TableColumn<Item, ItemBrand> colBrand;
 	private TableColumn<Item, String> colEdit;
 	private TableColumn<Item, String> colDelete;
+	@SuppressWarnings("unchecked")
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		colId = new TableColumn<Item, String>("Id");

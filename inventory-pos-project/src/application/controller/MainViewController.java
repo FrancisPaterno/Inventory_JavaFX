@@ -2,8 +2,16 @@ package application.controller;
 
 import java.io.IOException;
 import java.net.URL;
+import java.sql.Connection;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.hibernate.Session;
+
+import application.controller.datamodel.manager.SessionManager;
+import application.logging.manager.ConnectionFactory;
 import javafx.animation.FadeTransition;
 import javafx.animation.Interpolator;
 import javafx.animation.KeyFrame;
@@ -16,7 +24,10 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.FlowPane;
@@ -68,8 +79,58 @@ public class MainViewController implements Initializable {
 	public static String ITEM_SUPPLIER = "ITEM SUPPLIER";
 	public static String ITEM = "ITEM";
 
+	private final static Logger logger = LogManager.getLogger(MainViewController.class);
+
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
+		try {
+			logger.info("Connecting to database logger.");
+			Connection c =ConnectionFactory.getDatabaseConnection();
+			if(c == null) {
+				logger.info("Cannot contact databse logger.");
+				Alert alert = new Alert(AlertType.CONFIRMATION);
+				alert.setTitle("Confirm Continue");
+				alert.setContentText("Error contacting database logger, only file logger will be used for logging.\nDo you want to resume anyway?");
+				alert.initOwner(null);
+				Optional<ButtonType> result = alert.showAndWait();
+				if(result.isPresent() && result.get() == ButtonType.CANCEL) {
+					logger.info("User chose not to continue, system will now exit.");
+					System.exit(0);
+				}
+			}
+			else {
+				logger.info("Database logger contacted.");
+			}
+
+			logger.info("Connected to database logger.");
+			logger.debug("Database Connection :" + c);
+		} catch (Exception e1) {
+			logger.error("Error connecting to database logger.", e1);
+			Alert alert = new Alert(AlertType.CONFIRMATION);
+			alert.setTitle("Confirm Continue");
+			alert.setContentText("Database logger cannot be used for logging, only file logger will be used.\nDo you want to resume anyway?");
+			alert.initOwner(null);
+			Optional<ButtonType> result = alert.showAndWait();
+			if(result.isPresent() && result.get() == ButtonType.CANCEL) {
+				System.exit(0);
+			}
+		}
+
+		try {
+			logger.info("Obtaining databse connection.");
+			Session session = SessionManager.getSession();
+			logger.info("Connection established successfully.");
+			logger.debug(session);
+		} catch (Exception e) {
+			logger.error("Error obtaining connection from database.", e);
+			Alert alert = new Alert(AlertType.ERROR);
+			alert.setTitle("Error");
+			alert.initOwner(null);
+			alert.setContentText("Error starting up! Cannot connect to database.\nApplication will now exit.");
+			alert.showAndWait();
+			System.exit(0);
+		}
+
 		this.hideMasterListFast = new TranslateTransition(Duration.millis(.1), vboxmasterlist);
 		this.showMasterList = new TranslateTransition(Duration.millis(200), vboxmasterlist);
 		this.showMasterList.setToX(this.vboxmasterlist.getTranslateX() - this.vboxmasterlist.getWidth());

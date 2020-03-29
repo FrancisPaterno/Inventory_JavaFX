@@ -7,6 +7,8 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
@@ -17,19 +19,23 @@ import javafx.scene.control.Alert.AlertType;
 
 public class ManageItemCategory {
 	private static volatile ManageItemCategory INSTANCE;
-
+	private final static Logger logger = LogManager.getLogger(ManageItemCategory.class);
 	public static ManageItemCategory getInstance() {
 		if(INSTANCE == null) {
 			synchronized (ManageItemCategory.class) {
 				if(INSTANCE == null) {
+					logger.info("Initializing " + ManageItemCategory.class);
 					INSTANCE = new ManageItemCategory();
+					logger.info(ManageItemCategory.class + " has been instantiated.");
 				}
 			}
 		}
+		logger.debug(INSTANCE);
 		return INSTANCE;
 	}
 
 	public Boolean addItemCategory(String category, String description) {
+		logger.info("Adding item category " + category + ".");
 		Session session = SessionManager.getSession();
 		Transaction tx = null; 
 		try {
@@ -39,11 +45,12 @@ public class ManageItemCategory {
 			itmCat.setDescription(description.trim().isEmpty()?null:description.trim());
 			session.save(itmCat);
 			tx.commit();
+			logger.info("Item category " + itmCat + " has been saved.");
+			logger.debug("Item Category : " + itmCat);
 			return true;
 		} catch (HibernateException e) {
-			e.printStackTrace();
+			logger.error("Error saving item category.", e);
 			if(tx != null) tx.rollback();
-			e.printStackTrace();
 			Alert alert = new Alert(AlertType.ERROR);
 			alert.setTitle("Error");
 			alert.initOwner(null);

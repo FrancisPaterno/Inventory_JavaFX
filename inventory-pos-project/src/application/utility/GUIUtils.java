@@ -17,6 +17,7 @@ import javafx.embed.swing.SwingFXUtils;
 import javafx.scene.control.TableColumn;
 import javafx.scene.image.Image;
 
+@SuppressWarnings("restriction")
 public class GUIUtils {
 
 	private static Method columnToFitMethod;

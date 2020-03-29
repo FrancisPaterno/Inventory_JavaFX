@@ -3,8 +3,6 @@ package application.controller;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-import org.hibernate.Session;
-
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXCheckBox;
 
@@ -12,7 +10,6 @@ import application.Constants.PermissionConstants;
 import application.Constants.UserRoleConstants;
 import application.controller.datamodel.manager.ManagePermission;
 import application.controller.datamodel.manager.ManageUser;
-import application.controller.datamodel.manager.SessionManager;
 import application.datamodel.Permissions;
 import application.datamodel.RolePermission;
 import application.datamodel.UserRole;
@@ -22,7 +19,6 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
-import javafx.scene.control.CheckBox;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -44,6 +40,7 @@ public class PermissionController implements Initializable{
 	private TableColumn<Permissions, String> colPermission;
 	private TableColumn<Permissions, Boolean> colAllowed;
 	private Stage stage;
+	@SuppressWarnings("unchecked")
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		colPermission = new TableColumn<Permissions, String>("Permission");
