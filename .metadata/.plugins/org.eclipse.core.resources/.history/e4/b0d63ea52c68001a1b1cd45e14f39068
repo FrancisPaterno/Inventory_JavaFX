@@ -1,7 +1,0 @@
-package application.Constants;
-
-public class PermissionConstants {
-
-	public final static String ADD = "ADD";
-	
-}
