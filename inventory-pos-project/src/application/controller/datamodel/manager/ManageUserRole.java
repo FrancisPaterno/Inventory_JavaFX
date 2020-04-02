@@ -7,6 +7,8 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
@@ -17,19 +19,23 @@ import javafx.scene.control.Alert.AlertType;
 public class ManageUserRole {
 
 	private static volatile ManageUserRole INSTANCE;
+	private static final Logger logger = LogManager.getLogger(ManageUserRole.class);
 	
 	public static ManageUserRole getInstance() {
 		if(INSTANCE == null) {
 			synchronized (ManageUserRole.class) {
 				if(INSTANCE == null) {
+					logger.info("Instantiating " + ManageUserRole.class + ".");
 					INSTANCE = new ManageUserRole();
 				}
 			}
 		}
+		logger.debug(ManageUserRole.class + " : " + INSTANCE);
 		return INSTANCE;
 	}
 	
 	public Boolean addUserRole(String role, String description) {
+		logger.info("Adding " + role + ".");
 		Session session = SessionManager.getSession();
 		Transaction tx = null;
 		
@@ -40,10 +46,12 @@ public class ManageUserRole {
 			usrRole.setDescription(description == ""?null:description);
 			session.save(usrRole);
 			tx.commit();
+			logger.info(role + " has been added.");
+			logger.debug("Role : " + usrRole);
 			return true;
 		} catch (Exception e) {
+			logger.error("Error adding " + role + ".", e);
 			if(tx!= null) tx.rollback();
-			e.printStackTrace();
 			Alert alert = new Alert(AlertType.ERROR);
 			alert.setTitle("Error");
 			alert.initOwner(null);
@@ -60,14 +68,22 @@ public class ManageUserRole {
 		try {
 			tx = session.beginTransaction();
 			UserRole usrRole = session.get(UserRole.class, oldrole);
+			if(usrRole == null) {
+				logger.warn(oldrole + " does not exist.");
+			}
+			else {
+				logger.info("Updating " + oldrole);
+			}
 			usrRole.setRole(newrole);
 			usrRole.setDescription(description == ""?null:description);
 			session.update(usrRole);
 			tx.commit();
+			logger.info(newrole + " has been saved.");
+			logger.debug("Role : " + usrRole);
 			return true;
 		} catch (Exception e) {
+			logger.error("Error saving role.", e);
 			if(tx!= null) tx.rollback();
-			e.printStackTrace();
 			Alert alert = new Alert(AlertType.ERROR);
 			alert.setTitle("Error");
 			alert.initOwner(null);
@@ -84,12 +100,20 @@ public class ManageUserRole {
 		try {
 			tx = session.beginTransaction();
 			UserRole usrRole = session.get(UserRole.class, role);
+			if(usrRole == null) {
+				logger.warn(role + " does not exist.");
+			}
+			else {
+				logger.info("Deleting "+ role + ".");
+			}
 			session.delete(usrRole);
 			tx.commit();
+			logger.info(role + " has been deleted.");
+			logger.debug("Role : " + usrRole);
 			return true;
 		} catch (Exception e) {
+			logger.error("Error deleting " + role + ".",e);
 			if(tx!= null) tx.rollback();
-			e.printStackTrace();
 			Alert alert = new Alert(AlertType.ERROR);
 			alert.setTitle("Error");
 			alert.initOwner(null);
@@ -100,6 +124,7 @@ public class ManageUserRole {
 	}
 	
 	public List<UserRole> listUserRole(String category, String search){
+		logger.info("Retrieving user roles.");
 		List<UserRole> userroles = null;
 		String value = "%" + search + "%";
 		Session session = SessionManager.getSession();
@@ -128,14 +153,14 @@ public class ManageUserRole {
 		try {
 			userroles = session.createQuery(criteria).getResultList();
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			logger.error("Error retrieving user roles.");
 			Alert alert = new Alert(AlertType.ERROR);
 			alert.setTitle("Error");
 			alert.initOwner(null);
 			alert.setContentText(e.getMessage());
 			alert.show();
 		}
+		logger.debug("Roles : " + userroles);
 		return userroles;
 	}
 }

@@ -7,6 +7,8 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
@@ -17,12 +19,14 @@ import javafx.scene.control.Alert.AlertType;
 
 public class ManageSupplier {
 
-	public static volatile ManageSupplier INSTANCE;
+	private static volatile ManageSupplier INSTANCE;
+	private final static Logger logger = LogManager.getLogger(ManageSupplier.class);
 
 	public static ManageSupplier getInstance() {
 		if(INSTANCE == null) {
 			synchronized (ManageSupplier.class) {
 				if(INSTANCE == null) {
+					logger.info("Instantiating " + ManageSupplier.class + ".");
 					INSTANCE = new ManageSupplier();
 				}
 			}
@@ -35,6 +39,7 @@ public class ManageSupplier {
 		Transaction tx = null;
 
 		try {
+			logger.info("Adding Supplier : "+ suppliername + ".");
 			tx = session.beginTransaction();
 			Supplier supplier = new Supplier();
 			supplier.setSupplierName(suppliername);
@@ -46,9 +51,10 @@ public class ManageSupplier {
 			supplier.setMobile(mobile.trim().isEmpty()?null:mobile);
 			session.save(supplier);
 			tx.commit();
+			logger.info(suppliername + " has been added.");
 			return true;
 		} catch (Exception e) {
-			e.printStackTrace();
+			logger.error("Error adding supplier.", e);
 			if(tx!= null) tx.rollback();
 			e.printStackTrace();
 			Alert alert = new Alert(AlertType.ERROR);
@@ -69,6 +75,12 @@ public class ManageSupplier {
 		try {
 			tx = session.beginTransaction();
 			Supplier supplier = session.get(Supplier.class, oldId);
+			if(supplier == null) {
+				logger.warn(supplierName + " does not exist.");
+			}
+			else {
+				logger.info("Updating " + supplierName + ".");
+			}
 			supplier.setSupplierName(supplierName);
 			supplier.setBRN(BRN);
 			supplier.setAddress(address);
@@ -78,11 +90,12 @@ public class ManageSupplier {
 			supplier.setMobile(mobile == ""?null:mobile);
 			session.update(supplier);
 			tx.commit();
+			logger.info(supplierName + " supplier has been saved.");
+			logger.debug("Supplier : " + supplier);
 			return true;
 		} catch (Exception e) {
-			e.printStackTrace();
+			logger.error("Error saving supplier.", e);
 			if(tx!= null) tx.rollback();
-			e.printStackTrace();
 			Alert alert = new Alert(AlertType.ERROR);
 			alert.setTitle("Error");
 			alert.initOwner(null);
@@ -99,13 +112,20 @@ public class ManageSupplier {
 		try {
 			tx= session.beginTransaction();
 			Supplier supplier = session.get(Supplier.class, supplierId);
+			if(supplier == null) {
+				logger.warn("Supplier " + supplierId + " does not exist.");
+			}
+			else {
+				logger.info("Updating " + supplier.getSupplierName() + ".");
+			}
 			session.delete(supplier);
 			tx.commit();
+			logger.info(supplier.getSupplierName() + " has been saved.");
+			logger.debug("Supplier : " + supplier);
 			return true;
 		} catch (Exception e) {
-			e.printStackTrace();
+			logger.error("Error saving supplier.", e);
 			if(tx!= null) tx.rollback();
-			e.printStackTrace();
 			Alert alert = new Alert(AlertType.ERROR);
 			alert.setTitle("Error");
 			alert.initOwner(null);
@@ -116,6 +136,7 @@ public class ManageSupplier {
 	}
 	
 	public List<Supplier> listSupplier(String categorySearch, String search){
+		logger.info("Retrieving suppiers.");
 		List<Supplier> suppliers = null;
 		String value = "%" + search + "%";
 		Session session = SessionManager.getSession();
@@ -172,6 +193,7 @@ public class ManageSupplier {
 		}
 		criteria.where(OR);
 		suppliers = session.createQuery(criteria).getResultList();
+		logger.debug("Suppliers : " + suppliers);
 		return suppliers;
 	}
 }

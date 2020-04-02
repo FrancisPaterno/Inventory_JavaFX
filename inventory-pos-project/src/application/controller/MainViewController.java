@@ -6,8 +6,13 @@ import java.sql.Connection;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
+import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.core.LoggerContext;
+import org.apache.logging.log4j.core.async.AsyncLoggerConfig.RootLogger;
+import org.apache.logging.log4j.core.config.Configuration;
+import org.apache.logging.log4j.core.config.Configurator;
 import org.hibernate.Session;
 
 import application.controller.datamodel.manager.SessionManager;
@@ -96,13 +101,19 @@ public class MainViewController implements Initializable {
 				if(result.isPresent() && result.get() == ButtonType.CANCEL) {
 					logger.info("User chose not to continue, system will now exit.");
 					System.exit(0);
+				}else {
+					final LoggerContext ctx = (LoggerContext) LogManager.getContext(false);
+					final Configuration config = ctx.getConfiguration();
+					config.getRootLogger().removeAppender("MWNDatabase");
+					ctx.updateLoggers();
+					logger.info("Database logger turned off.");
 				}
 			}
 			else {
 				logger.info("Database logger contacted.");
+				logger.info("Connected to database logger.");
 			}
 
-			logger.info("Connected to database logger.");
 			logger.debug("Database Connection :" + c);
 		} catch (Exception e1) {
 			logger.error("Error connecting to database logger.", e1);
@@ -113,6 +124,10 @@ public class MainViewController implements Initializable {
 			Optional<ButtonType> result = alert.showAndWait();
 			if(result.isPresent() && result.get() == ButtonType.CANCEL) {
 				System.exit(0);
+			}
+			else {
+				Configurator.setRootLevel(Level.OFF);
+				logger.info("Turn off database logger.");
 			}
 		}
 

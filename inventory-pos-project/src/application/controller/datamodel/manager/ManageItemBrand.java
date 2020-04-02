@@ -21,6 +21,7 @@ public class ManageItemBrand {
 
 	private static volatile ManageItemBrand INSTANCE;
 	private final static Logger logger = LogManager.getLogger(ManageItemBrand.class);
+
 	public static ManageItemBrand getInstance() {
 		if(INSTANCE == null) {
 			synchronized (ManageItemBrand.class) {

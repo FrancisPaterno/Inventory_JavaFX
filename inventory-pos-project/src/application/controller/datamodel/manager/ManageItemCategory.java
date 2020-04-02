@@ -20,6 +20,7 @@ import javafx.scene.control.Alert.AlertType;
 public class ManageItemCategory {
 	private static volatile ManageItemCategory INSTANCE;
 	private final static Logger logger = LogManager.getLogger(ManageItemCategory.class);
+
 	public static ManageItemCategory getInstance() {
 		if(INSTANCE == null) {
 			synchronized (ManageItemCategory.class) {
@@ -67,15 +68,22 @@ public class ManageItemCategory {
 		try {
 			tx = session.beginTransaction();
 			ItemCategory itmCat = session.get(ItemCategory.class, oldCategory);
+			if(itmCat == null) {
+				logger.warn(oldCategory + " does not exist.");
+			}
+			else {
+				logger.info("Updating " + itmCat.getItemCategory() + ".");
+			}
 			itmCat.setItemCategory(newcategory);
 			itmCat.setDescription(description);
 			session.update(itmCat);
 			tx.commit();
+			logger.info(itmCat.getItemCategory() + " has been updated.");
 			return true;
 		}
 		catch(HibernateException e) {
+			logger.error("Error updating item category.", e);
 			if(tx != null) tx.rollback();
-			e.printStackTrace();
 			Alert alert = new Alert(AlertType.ERROR);
 			alert.setTitle("Error");
 			alert.initOwner(null);
@@ -92,14 +100,21 @@ public class ManageItemCategory {
 		try {
 			tx= session.beginTransaction();
 			ItemCategory itmCat = session.get(ItemCategory.class, category);
+			if(itmCat == null) {
+				logger.warn(category + " does not exist.");
+			}
+			else {
+				logger.info("Updating " + itmCat.getItemCategory() + ".");
+			}
 			session.delete(itmCat);
 			tx.commit();
+			logger.info(itmCat.getItemCategory() + " has been deleted.");
 			return true;
 		}
 		catch(HibernateException e)
 		{
 			if(tx!= null) tx.rollback();
-			e.printStackTrace();
+			logger.error("Error deleting item category.", e);
 			Alert alert = new Alert(AlertType.ERROR);
 			alert.setTitle("Error");
 			alert.initOwner(null);
@@ -138,9 +153,10 @@ public class ManageItemCategory {
 
 			criteria.where(OR);
 			itemCats = session.createQuery(criteria).getResultList();
+			logger.debug("Item category list : " + itemCats);
 		}
 		catch(HibernateException e) {
-			e.printStackTrace();
+			logger.error("Error retrieving item category.", e);
 			Alert alert = new Alert(AlertType.ERROR);
 			alert.setTitle("Error");
 			alert.initOwner(null);

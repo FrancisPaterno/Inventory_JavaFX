@@ -5,6 +5,9 @@ import java.net.URL;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import com.jfoenix.controls.JFXButton;
 
 import application.Constants.PermissionConstants;
@@ -58,9 +61,12 @@ public class ItemBrandController implements Initializable{
 	private TableColumn<ItemBrand, String> colEdit;
 	private TableColumn<ItemBrand, String> colDelete;
 
+	private final static Logger logger = LogManager.getLogger(ItemBrandController.class);
+
 	@SuppressWarnings("unchecked")
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
+		logger.info("Initializing Item brand controller.");
 		this.colBrand = new TableColumn<ItemBrand, String>("Brand");
 		this.colBrand.setCellValueFactory(new PropertyValueFactory<>("Brandname"));
 		this.colDescription = new TableColumn<ItemBrand, String>("Description");
@@ -172,17 +178,15 @@ public class ItemBrandController implements Initializable{
 				try {
 					showModal(e);
 				} catch (IOException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
+					logger.error("Error adding new item brand.", e1);
 				}
 			}
-
 		});
-
 		setDataModel(cmbCategorySearch.getSelectionModel().getSelectedItem(), txtSearch.getText().trim());
 	}
 
 	private void setDataModel(String category, String search) {
+		logger.info("Retrieving Item brand.");
 		ObservableList<ItemBrand> itemBrand = FXCollections.observableArrayList(ManageItemBrand.getInstance().listItemBrands(category, search));
 		tblViewer.getItems().removeAll(itemBrand);
 		tblViewer.setItems(itemBrand);
@@ -194,6 +198,7 @@ public class ItemBrandController implements Initializable{
 	}
 
 	public void showModal(ActionEvent event) throws IOException {
+		logger.info("Add : Loading Item brand interface.");
 		FXMLLoader fxmlModal = new FXMLLoader(getClass().getResource("/application/views/ItemBrandInterfaceView.fxml"));
 		BorderPane modal = fxmlModal.load();
 		ItemBrandInterfaceController itemBrandCont = fxmlModal.getController();
@@ -204,10 +209,12 @@ public class ItemBrandController implements Initializable{
 		dialog.initOwner(btnAddNew.getScene().getWindow());
 		dialog.initModality(Modality.APPLICATION_MODAL);
 		dialog.showAndWait();
+		logger.info("Add : Item brand interface loaded.");
 		setDataModel(cmbCategorySearch.getSelectionModel().getSelectedItem(), txtSearch.getText().trim());
 	}
 
 	public void showEditDialog(ItemBrand brand) throws IOException {
+		logger.info("Edit : Loading Item brand interface.");
 		FXMLLoader fxmlModal = new FXMLLoader(getClass().getResource("/application/views/ItemBrandInterfaceView.fxml"));
 		BorderPane modal = fxmlModal.load();
 		ItemBrandInterfaceController itemBrandCont = fxmlModal.getController();
@@ -221,6 +228,7 @@ public class ItemBrandController implements Initializable{
 		dialog.initOwner(btnAddNew.getScene().getWindow());
 		dialog.initModality(Modality.APPLICATION_MODAL);
 		dialog.showAndWait();
+		logger.info("Edit : Item brand interface loaded.");
 		setDataModel(cmbCategorySearch.getSelectionModel().getSelectedItem(), txtSearch.getText().trim());
 	}
 }

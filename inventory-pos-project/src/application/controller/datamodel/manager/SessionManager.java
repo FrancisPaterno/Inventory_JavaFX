@@ -65,17 +65,4 @@ public  class SessionManager {
 		}
 		return session;
 	}
-
-	public static Connection getConnection()  {
-		Connection c = null;
-		logger.info("Obtaining connection for database logger...");
-		try {
-			c = getInstance().getSessionFactoryOptions().getServiceRegistry()
-					.getService(ConnectionProvider.class).getConnection();
-			logger.info("Connection for database logger successfully obtained.");
-		} catch (SQLException e) {
-			logger.error("Error obtaining connection for database logger...", e);
-		}
-		return c;
-	}
 }
